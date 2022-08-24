@@ -1,0 +1,224 @@
+@charset "utf-8";
+
+@mixin width-min($width: 481px) {
+  @media screen and (min-width: $width) {
+    @content;
+  }
+}
+
+@mixin width-min-max($min: 481px, $max: 800px) {
+  @media screen and (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}
+
+@mixin width-max($width: 480px) {
+  @media screen and (max-width: $width) {
+    @content;
+  }
+}
+
+.header-title-zone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  @include width-max(480px) {
+    font-size: 13px;
+  }
+  @include width-min(1501px) {
+    font-size: 27px;
+  }
+}
+
+.text-zone {
+  p {
+    @include width-min(1501px) {
+      font-size: 20px;
+    }
+  }
+}
+
+.title-zone {
+  h2 {
+    margin-top: 10px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid rgb(33, 207, 204);
+  }
+  @include width-max(800px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  @include width-min(801px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  @include width-min(1501px) {
+    font-size: 25px;
+  }
+}
+
+.text-zone,
+.file-name-zone,
+.description-detail-zone,
+.field-title-zone,
+.field-main-zone,
+.method-title-zone,
+.method-name-zone {
+  display: flex;
+  align-items: center;
+  @include width-max(800px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  @include width-min(801px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.file-name-zone {
+  font-size: 23px;
+  margin-bottom: 10px;
+  @include width-min(1501px) {
+    font-size: 25px;
+  }
+}
+
+.description-detail-zone {
+  @include width-min(1501px) {
+    font-size: 20px;
+  }
+}
+
+.description-sub-title {
+  @include width-max(1500px) {
+    font-size: 20px;
+  }
+  @include width-min(1501px) {
+    font-size: 25px;
+  }
+}
+
+.description-sub-title,
+.method-zone {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.method-name-zone {
+  h5 {
+    @include width-max(1500px) {
+      font-size: 17px;
+    }
+    @include width-min(1501px) {
+      font-size: 22px;
+    }
+  }
+}
+
+pre {
+  @include width-max(800px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  @include width-min(801px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  margin-bottom: 10px;
+}
+
+code {
+  width: 100%;
+  display: flex;
+  align-content: center;
+  @include width-min(1501px) {
+    font-size: 20px;
+  }
+}
+
+.overview-main-zone {
+  p {
+    display: flex;
+    align-items: center;
+    @include width-min(1501px) {
+      font-size: 20px;
+    }
+  }
+  @include width-max(800px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  @include width-min(801px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.field-main-zone {
+  @include width-min(1501px) {
+    font-size: 20px;
+  }
+}
+
+.method-main-zone,
+.improvement-zone {
+  p {
+    display: flex;
+    align-items: center;
+    @include width-max(800px) {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+    @include width-min(801px) {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    @include width-min(1501px) {
+      font-size: 20px;
+    }
+  }
+}
+
+.reference-document-zone {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  .reference-document-list {
+    a {
+      word-break: break-all;
+    }
+  }
+}
+
+.reference-document-zone {
+  @include width-max(800px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  @include width-min(801px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  @include width-min(1501px) {
+    font-size: 20px;
+  }
+}
+
+.movie-main-zone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  video {
+    width: 80%;
+  }
+}
+
+video::-webkit-media-controls-volume-slider {
+  display: none;
+}
+
+video::-webkit-media-controls-mute-button {
+  display: none;
+}

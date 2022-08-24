@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./icons-g484b53a9c_1280.png" type="image/png"/>
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css" />
+    <link rel="stylesheet" href="highlight/styles/an-old-hope.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    <title>テトリス</title>
+  </head>
+  <body>
+    <header>
+      <div class="header-title-zone">
+        <h1>テトリス</h1>
+      </div>
+    </header>
+    <main>
+      <div class="main-zone">
+        <div class="introduction-zone">
+          <div class="title-zone">
+            <h2>導入</h2>
+          </div>
+          <div class="text-zone">
+            <p>
+              今回は、Javaでテトリスを作成した。
+              今回このようなものを作成した理由は、
+              Javaは、ゲーム開発、WEBサイトの作成、WEBアプリケーション開発などできることが多いので、
+              Javaに慣れておきたかったからである。
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="overview-zone">
+        <div class="title-zone">
+          <h2>概要</h2>
+        </div>
+        <div class="overview-main-zone">
+          <p>
+            1. 広さは20×10のフィールドを生成する。 <br />
+            2. ブロックをフィールドに落とす。 <br />
+            3. ブロックの回転や移動は、キーボード入力で操作する。 <br />
+            4. 横1列に全てブロックが並んだらその列のブロックを削除 <br />
+            5.
+            そして、ブロックが消えたら、消えた列分上のブロックを下に移動する。
+            <br />
+            6. 1列目か2列目にブロックがあった時点でゲームオーバー。 <br />
+          </p>
+        </div>
+      </div>
+      <div class="detail-zone">
+        <div class="title-zone">
+          <h2>動作に関する説明</h2>
+        </div>
+        <div class="detail-main-zone">
+          <div class="java-class-zone">
+            <h3 class="file-name-zone">mainTetris.java</h3>
+            <pre><code class="Java">
+import java.util.ArrayList;
+import java.util.Collections;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
+import javax.swing.BoxLayout;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.OverlayLayout;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+
+class mainTetris {
+    private static int [][] fields = {
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0}, //5
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0}, //10
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0}, //15
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0}, //20
+    };
+
+    public static void main(String[] args) {
+        mino currentMino = null;
+        ArrayList<mino> nextMinos = new ArrayList<>();
+        ArrayList<mino> minos = new ArrayList<>();
+
+        int CYAN = 1;
+        int ORANGE = 2;
+        int RED = 3;
+        int GREEN = 4;
+        int PINK = 5;
+        int BLUE = 6;
+        int YELLOW = 7;
+
+        //I
+        minos.add(new mino(new int[][][] {
+            {
+                {0,0,0,0},
+                {1,1,1,1},
+                {0,0,0,0},
+                {0,0,0,0},
+            },
+            {
+                {0,1,0,0},
+                {0,1,0,0},
+                {0,1,0,0},
+                {0,1,0,0},
+            },
+        }, CYAN));
+
+        //L
+        minos.add(new mino(new int[][][] {
+            {
+                {0,0,0,0},
+                {0,1,1,1},
+                {0,1,0,0},
+                {0,0,0,0},
+            },
+            {
+                {0,0,0,0},
+                {0,1,1,0},
+                {0,0,1,0},
+                {0,0,1,0},
+            },
+            {
+                {0,0,0,0},
+                {0,0,1,0},
+                {1,1,1,0},
+                {0,0,0,0},
+            },
+            {
+                {0,1,0,0},
+                {0,1,0,0},
+                {0,1,1,0},
+                {0,0,0,0},
+            },
+        }, ORANGE));
+  
+        //J
+        minos.add(new mino(new int[][][] {
+            {
+                {0,0,0,0},
+                {0,1,0,0},
+                {0,1,1,1},
+                {0,0,0,0},
+            },
+            {
+                {0,0,0,0},
+                {0,1,1,0},
+                {0,1,0,0},
+                {0,1,0,0},
+            },
+            {
+                {0,0,0,0},
+                {1,1,1,0},
+                {0,0,1,0},
+                {0,0,0,0},
+            },
+            {
+                {0,0,1,0},
+                {0,0,1,0},
+                {0,1,1,0},
+                {0,0,0,0},
+            },
+        }, RED));
+  
+        //T
+        minos.add(new mino(new int[][][] {
+            {
+                {1,1,1},
+                {0,1,0},
+                {0,0,0},
+            },
+            {
+                {0,1,0},
+                {1,1,0},
+                {0,1,0},
+            },
+            {
+                {0,1,0},
+                {1,1,1},
+                {0,0,0},
+            },
+            {
+                {0,1,0},
+                {0,1,1},
+                {0,1,0},
+            }
+        }, GREEN));
+  
+        //O
+        minos.add(new mino(new int[][][] {
+            {
+                {1,1},
+                {1,1},
+            }
+        }, PINK));
+  
+        //S
+        minos.add(new mino(new int[][][] {
+            {
+                {0,1,1},
+                {1,1,0},
+                {0,0,0},
+            },
+            {
+                {1,0,0},
+                {1,1,0},
+                {0,1,0},
+            },
+        }, BLUE));
+  
+        //Z
+        minos.add(new mino(new int[][][] {
+            {
+                {1,1,0},
+                {0,1,1},
+                {0,0,0},
+            },
+            {
+                {0,1,0},
+                {1,1,0},
+                {1,0,0},
+            }
+        , YELLOW));
+
+        //テトリミノ全種をシャッフルし、二巡分だけnextに挿入しておく
+        Collections.shuffle(minos);
+        minos.stream().forEach(nextMinos::add);
+        Collections.shuffle(minos);
+        minos.stream().forEach(nextMinos::add);
+        //現在のテトリミノを取得
+        currentMino = nextMinos.remove(0);
+
+        window window = new window("テトリス",1300, 600);
+        JPanel basePanel = new JPanel();
+        basePanel.setLayout(new OverlayLayout(basePanel));
+        mainPanel panel = new mainPanel(fields, currentMino, nextMinos, minos, 1300, 600);
+        JPanel startPanel = new JPanel();
+        JLabel background = new JLabel(new ImageIcon("./hd-wallpaper-g03c18aabe_1280.jpg"));
+        JPanel backgroundPanel = new JPanel();
+        backgroundPanel.add(background);
+        JLabel title = new JLabel("TETRIS");
+        Font font1 = new Font("ＭＳ Ｐゴシック",Font.PLAIN, 70);
+        title.setFont(font1);
+        title.setForeground(Color.WHITE);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton startButton = new JButton("Start");
+        startButton.setFocusPainted(false); // 枠線非表示
+        startButton.setBorder(new LineBorder(Color.BLACK, 0, false));
+        startButton.setMargin(new Insets(0, 0, 0, 0));
+        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        startButton.setForeground(Color.GREEN);
+        startButton.setBackground(Color.black);
+        startButton.setOpaque(false); // 背景透明化
+        startButton.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 30));
+        startButton.addActionListener(new onclickBtn(window, panel, startButton));
+        startPanel.setLayout(new BoxLayout(startPanel, BoxLayout.PAGE_AXIS));
+        startPanel.add(Box.createRigidArea(new Dimension(0,150)));
+        startPanel.add(title);
+        startPanel.add(Box.createRigidArea(new Dimension(0,50)));
+        startPanel.add(startButton);
+        startPanel.setBackground(Color.black);
+        startPanel.setOpaque(false); // 背景透明化
+        basePanel.add(startPanel);
+        basePanel.add(backgroundPanel);
+        window.getContentPane().add(basePanel, BorderLayout.CENTER);
+        window.setVisible(true); // ウィンドウ表示
+    }
+}
+          </code></pre>
+            <div class="description-zone">
+              <div class="description-detail-zone">
+                <p>ゲームの初期設定と画面の表示を行うクラスである。 <br /></p>
+              </div>
+              <div class="field-zone">
+                <div class="field-title-zone">
+                  <h4 class="description-sub-title">フィールド</h4>
+                </div>
+                <div class="field-main-zone">
+                  <p>
+                    fieldsは、20×10の二次元配列であり、テトリスのフィールドを表す。<br />
+                  </p>
+                </div>
+              </div>
+              <div class="method-zone">
+                <div class="method-title-zone">
+                  <h4 class="description-sub-title">メソッド</h4>
+                </div>
+                <div class="method-main-zone">
+                  <div class="method-name-zone">
+                    <h5>main</h5>
+                  </div>
+                  <p>
+                    minos, nextMinos は、minoクラスの線形リストである。<br />
+                    minos に生成されたminoクラスを加える。 <br />
+                    nextminos に、二巡分のブロックを加える。 <br />
+                    それより以下は、スタート画面を表示させるためのデザインとなっている。
+                    <br />
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="java-class-zone">
+            <h3 class="file-name-zone">mino.java</h3>
+            <pre><code class="Java">
+import java.util.Arrays;
+
+public class mino {
+    private int [][][] minos;
+    private int color;
+
+    public mino(int[][][] _minos, int _color){
+        minos = _minos;
+        color = _color;
+
+        //配列の1をすべてカラーを表す数値に変換
+        Arrays.stream(minos).forEach(e -> Arrays.stream(e).forEach(intarr ->{
+            for ( int i = 0;i < intarr.length;i++ ) {
+                if ( intarr[i] == 1 ) {
+                    intarr[i] = color;
+                }
+            }
+        }));
+    }
+
+    public int[][][] getMino(mino _mino) {
+        return _mino.minos;
+    }
+
+    public int currentMinoLength(mino currentMino) {
+        return currentMino.minos.length;
+    }
+
+    public int getColor(mino mino) {
+        return mino.color;
+    }
+}
+          </code></pre>
+            <div class="description-zone">
+              <div class="description-detail-zone">
+                <p>
+                  ブロックの状態と色を設定するクラスである。<br />
+                  1以上の値だと描画される仕組みであり、対応した色の値に設定される。
+                  <br />
+                </p>
+              </div>
+              <div class="field-zone">
+                <div class="field-title-zone">
+                  <h4 class="description-sub-title">フィールド</h4>
+                </div>
+                <div class="field-main-zone">
+                  <p>
+                    minos
+                    は、ブロックの塊を表し、1次元目=回転、2次元目=縦、3次元目=横の三次元配列である。<br />
+                    colorは、ブロックの色を表す。<br />
+                  </p>
+                </div>
+              </div>
+              <div class="method-zone">
+                <div class="method-title-zone">
+                  <h4 class="description-sub-title">メソッド</h4>
+                </div>
+                <div class="method-main-zone">
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>getMino</h5>
+                    </div>
+                    <p>
+                      mino クラスのフィールドのminosを得るメソッドである。
+                      <br />
+                    </p>
+                  </div>
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>currentMinoLength</h5>
+                    </div>
+                    <p>
+                      mino クラスのフィールドのminosの長さを得るメソッドである。
+                      <br />
+                    </p>
+                  </div>
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>getColor</h5>
+                    </div>
+                    <p>
+                      mino クラスのフィールドのcolorを得るメソッドである。
+                      <br />
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="java-class-zone">
+            <h3 class="file-name-zone">window.java</h3>
+            <pre><code class="Java">
+import javax.swing.JFrame;
+
+class window extends JFrame {
+    public window(String title, int width, int height) {
+        super(title);
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // 閉じるボタンの処理
+        setSize(width,height); // ウィンドウサイズ
+        setLocationRelativeTo(null); // 画面中央に配置
+        setResizable(true); // リサイズ禁止
+    }
+
+    // キーボード・リスナーの設定するメソッド
+    public void addListener(mainPanel panel) {
+        addKeyListener(new key_input(panel));
+    }
+}
+          </code></pre>
+            <div class="description-zone">
+              <div class="description-detail-zone">
+                <p>ウィンドウの設定を行うクラスである。<br /></p>
+              </div>
+              <div class="method-zone">
+                <div class="method-title-zone">
+                  <h4 class="description-sub-title">メソッド</h4>
+                </div>
+                <div class="method-main-zone">
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>addListener</h5>
+                    </div>
+                    <p>
+                      キーボード・リスナーの設定するメソッドである。
+                      <br />
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="java-class-zone">
+            <h3 class="file-name-zone">onclickBtn.java</h3>
+            <pre><code class="Java">
+import javax.swing.JButton;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.BorderLayout;
+
+public class onclickBtn implements ActionListener {
+    private JButton startButton;
+    private window window;
+    private mainPanel gamePanel;
+
+    public onclickBtn(window _window, mainPanel panel, JButton button) {
+        window = _window;
+        gamePanel = panel;
+        startButton = button;
+    } 
+
+    public void changeScene() {
+        window.getContentPane().remove(0);
+        window.addListener(gamePanel);
+		window.getContentPane().add(gamePanel, BorderLayout.CENTER);
+        window.setVisible(true); // ウィンドウ表示
+        window.requestFocusInWindow(); //フォーカス取得
+    }
+
+    public void actionPerformed(ActionEvent e){
+		    if(e.getSource() == startButton){
+            changeScene();
+		    }
+	  }
+}
+          </code></pre>
+            <div class="description-zone">
+              <div class="description-detail-zone">
+                <p>
+                  ボタンを押したらゲーム画面に遷移させるクラスである。<br />
+                </p>
+              </div>
+              <div class="field-zone">
+                <div class="field-title-zone">
+                  <h4 class="description-sub-title">フィールド</h4>
+                </div>
+                <div class="field-main-zone">
+                  <p>
+                    startButtonは、ゲーム開始ボタンを表す。<br />
+                    windowは、表示領域を表す。<br />
+                    gamePanelは、実際にゲームを行う画面である。 <br />
+                  </p>
+                </div>
+              </div>
+              <div class="method-zone">
+                <div class="method-title-zone">
+                  <h4 class="description-sub-title">メソッド</h4>
+                </div>
+                <div class="method-main-zone">
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>changeScene</h5>
+                    </div>
+                    <p>
+                      スタート画面からゲーム画面に遷移するためのメソッドである。<br />
+                    </p>
+                  </div>
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>actionPerformed</h5>
+                    </div>
+                    <p>
+                      アクションイベントを処理するためのメソッドである。<br />
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="java-class-zone">
+            <h3 class="file-name-zone">key_input.java</h3>
+            <pre><code class="Java">
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+
+public class key_input implements KeyListener {
+    private int keyCode; // キーコードを入れるフィールド
+    private mainPanel panel;
+
+    public key_input(mainPanel _panel) {
+        panel = _panel;
+    }
+
+    //キーが押されたときに呼ばれるメソッド
+    public void keyPressed(KeyEvent event) {
+        //キーコード取得
+        keyCode = event.getKeyCode();
+        panel.moveBlock(keyCode);
+    }
+
+    //キーが離されたときに呼ばれるメソッド
+    public void keyReleased(KeyEvent event) {
+        panel.speedDown();
+    }
+
+    //キーがタイプされたときに呼ばれるメソッド
+    public void keyTyped(KeyEvent event) {
+        // 何もしない
+    }
+}
+          </code></pre>
+            <div class="description-zone">
+              <div class="description-detail-zone">
+                <p>
+                  どのキーを入力したのかを判別するためのクラスである。<br />
+                </p>
+              </div>
+              <div class="field-zone">
+                <div class="field-title-zone">
+                  <h4 class="description-sub-title">フィールド</h4>
+                </div>
+                <div class="field-main-zone">
+                  <p>
+                    keyCodeは、どのキーが押されたのかを確認するためのフィールドである。<br />
+                    panelは、ゲーム画面を表す。<br />
+                  </p>
+                </div>
+              </div>
+              <div class="method-zone">
+                <div class="method-title-zone">
+                  <h4 class="description-sub-title">メソッド</h4>
+                </div>
+                <div class="method-main-zone">
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>keyPressed</h5>
+                    </div>
+                    <p>
+                      キーが押されたときに呼ばれるメソッドである。
+                      <br />
+                    </p>
+                  </div>
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>keyReleased</h5>
+                    </div>
+                    <p>キーが離されたときに呼ばれるメソッドである。<br /></p>
+                  </div>
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>keyTyped</h5>
+                    </div>
+                    <p>
+                      キーがタイプされたときに呼ばれるメソッドである。<br />
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="java-class-zone">
+            <h3 class="file-name-zone">mainPanel.java</h3>
+            <pre><code class="Java">
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.awt.event.KeyEvent;
+import java.awt.Font;
+
+public class mainPanel extends JPanel{
+    private int fields[][];
+    private mino currentMino = null;
+    private ArrayList&lt;mino> nextMinos = new ArrayList<>();
+    private ArrayList&lt;mino> minos = new ArrayList<>();
+    private int fallFrame;
+    private int fallFrameCheck = 60; // 移動速度を表すフィールド
+    private int x = 0;
+    private int y = 0;
+    private int r = 0;
+    // 元の座標の仮座標用
+    private int xx = x;
+    private int yy = y;
+	  private int rr = r;
+    private int fx;
+    private int fy;
+    private boolean gameOver = false; // ゲームオーバーしたかどうかを判断するフィールド
+    private boolean inputKey = false; // キーが入力されたのかを判別するフィールド
+    private static int BLOCK_SIZE = 25;
+    private int width = 0;
+    private int height = 0;
+    private int field_x = 0;
+    private int field_y = 0;
+
+    // ブロックの色を表す
+    private static final int CYAN = 1;
+	  private static final int ORANGE = 2;
+	  private static final int RED = 3;
+	  private static final int GREEN = 4;
+	  private static final int PINK = 5;
+	  private static final int BLUE = 6;
+	  private static final int YELLOW = 7;
+
+    public mainPanel(int _fields[][], mino _currentMino, ArrayList&lt;mino> _nextMinos, ArrayList&lt;mino> _minos, int _width, int _height) {
+        fields = _fields;
+        currentMino = _currentMino;
+        nextMinos = _nextMinos;
+        minos = _minos;
+        width = _width;
+        height = _height;
+
+        field_x = (width/2) - 150;
+        field_y = (height/2) - 250;
+
+        // スレッドの生成
+        Thread th = new blockThread();
+        th.start();
+    }
+
+    public class blockThread extends Thread {
+        public void run() {
+            while(true) {
+                // 再描画要求
+                repaint();
+                // 50ms(0.05秒)待機
+                try {
+                    Thread.sleep(50);
+                } catch(Exception e) {
+                }
+            }
+        }
+    }
+
+    // ブロックを移動するためのメソッド
+    public void moveBlock(int keyCode) {
+        switch(keyCode) {
+            // 右を押されたら
+            case KeyEvent.VK_RIGHT:
+                xx++;
+                inputKey = true;
+                break;
+            // 左を押されたら
+            case KeyEvent.VK_LEFT:
+                xx--;
+                inputKey = true;
+                break;
+            case KeyEvent.VK_DOWN :
+                fallFrameCheck = 2;
+                break;
+            case KeyEvent.VK_SPACE:
+                rr++;
+                if(rr>=currentMino.currentMinoLength(currentMino)) {
+                    rr = 0;
+                }
+                inputKey = true;
+                break;
+        }
+        repaint();
+    }
+
+    // ↓キーが離れたら元の速度に戻すメソッド
+    public void speedDown() {
+        fallFrameCheck = 60;
+        repaint();
+    }
+
+    public void process() {
+        if(!inputKey) {
+            yy = y;
+	          xx = x;
+		        rr = r;
+        }
+        else {
+            inputKey = false;
+        }
+
+        //自由落下の処理
+        fallFrame++;
+
+        if (fallFrame >= fallFrameCheck) {
+            fallFrame = 0;
+            yy++;
+        }
+
+        int[][][] mino = currentMino.getMino(currentMino);
+        int rrr = rr % mino.length;
+        boolean isUpdate = true;
+
+        label:
+        for ( int i = 0;i &lt; mino[rrr].length;i++ ) {
+            for ( int j = 0;j &lt; mino[rrr][i].length;j++ ) {
+                if ( mino[rrr][i][j] != 0 ) {
+                    fx = xx + j;
+                    fy = yy + i;
+                    //移動、回転後にブロックがあれば更新不可能フラグを立てる
+                    if ( fy >= 20 || fx &lt; 0 || fx >= 10 || fields[fy][fx] != 0 ) {
+                        isUpdate = false;
+                        break label;
+                    }
+                }
+            }
+        }
+
+        //座標更新処理
+        if (isUpdate) {
+            x = xx;
+			      y = yy;
+			      r = rr;
+		    } else {
+		        //移動不能でyが加算されたときは配置完了判定
+			      if ( yy > y && xx == x && rrr == rr ) {
+				        for ( int i = 0;i &lt; mino[rrr].length;i++ ) {
+				            for ( int j = 0;j &lt; mino[rrr][i].length;j++ ) {
+						            fx = x + j;
+						            fy = y + i;
+						            //ブロックをフィールドに置く
+						            if ( mino[rrr][i][j] != 0 ) {
+                            fields[fy][fx] = mino[rrr][i][j];
+                        }
+					          }
+				        }
+                //フィールドをチェックし、揃ったラインを削除する
+                for ( int i = 0;i &lt; fields.length;i++ ) {
+                    int count = 0;
+                    //ブロックが置かれている数をカウント
+			              for ( int j = 0;j &lt; fields[i].length;j++ ) {
+				                if ( fields[i][j] == 0 ) {
+					                  break;
+				                }
+				                count++;
+			              }
+                    if(count == 10) {
+                        // ライン削除
+                        for ( int j = 0;j &lt; fields[i].length;j++ ) {
+                            fields[i][j] = 0;
+                        }
+                        //上にあるテトリミノをすべて一段下へずらす
+				                for ( int k = i - 1;k >= 0;k-- ) {
+				                    for ( int j = 0;j &lt; fields[i].length;j++ ) {
+						                    fields[k+1][j] = fields[k][j];
+					                  }
+				                }
+                    }
+                }
+                nextInit();
+            }
+        }
+    }
+
+    private void nextInit() {
+        r = 0;
+		    x = 4;
+		    y = 0;
+        currentMino = nextMinos.remove(0);
+        //出現予定テトリミノが減ってきたらシャッフルして次の一巡分を挿入
+        if ( nextMinos.size() &lt; 7 ) {
+            Collections.shuffle(this.minos);
+            this.minos.stream().forEach(nextMinos::add);
+        }
+
+        for(int i=0; i&lt;2; i++) {
+            for ( int j = 0;j &lt; fields[0].length;j++ ) {
+                if ( fields[i][j] != 0 ) {
+                    gameOver = true;
+                }
+			      }
+        }
+    }
+
+    public void draw(Graphics g) {
+        if (currentMino == null){
+            return;
+        }
+
+        process();
+
+        for (int i = 0; i &lt; 20; i++) {
+            for (int j = 0; j &lt; 10 ; j++) {
+                if(fields[i][j] != 0) {
+                    SetColor(g, fields[i][j]);
+                    g.fillRect(j*BLOCK_SIZE + field_x, i*BLOCK_SIZE + field_y, BLOCK_SIZE, BLOCK_SIZE);
+                    g.setColor(Color.WHITE);
+                    g.drawRect(j*BLOCK_SIZE + field_x, i*BLOCK_SIZE + field_y, BLOCK_SIZE, BLOCK_SIZE);
+                }
+            }
+        }
+
+        // NEXT画面
+        g.setColor(Color.white);
+        g.drawString("NEXT", field_x+300, field_y+180);
+        for ( int k = 0;k &lt; 3;k++ ) {
+            int nextXOff = 300;
+            int nextYOff = 200+k*100;
+            mino mino = nextMinos.get(k);
+            int[][][] minosDisplay = mino.getMino(mino);
+            for (int i = 0; i &lt; minosDisplay[0].length; i++) {
+                for (int j = 0; j &lt; minosDisplay[0][i].length; j++) {
+                    if(minosDisplay[0][i][j] != 0 ) {
+                        SetColor(g, minosDisplay[0][i][j]);
+                        g.fillRect(nextXOff+j*BLOCK_SIZE+field_x, nextYOff+i*BLOCK_SIZE+field_y, BLOCK_SIZE, BLOCK_SIZE);
+                        g.setColor(Color.WHITE);
+                        g.drawRect(nextXOff+j*BLOCK_SIZE+field_x, nextYOff+i*BLOCK_SIZE+field_y, BLOCK_SIZE, BLOCK_SIZE);
+                    }
+                }
+            }
+        }
+
+        // 現在落下中のミノの描画
+        for ( int i = 0;i &lt; currentMino.getMino(currentMino)[r].length;i++ ) {
+            for ( int j = 0;j &lt; currentMino.getMino(currentMino)[0][i].length;j++ ) {
+                if ( currentMino.getMino(currentMino)[r][i][j] != 0 ) {
+                    SetColor(g, currentMino.getMino(currentMino)[r][i][j]);
+                    g.fillRect(j*BLOCK_SIZE + x*BLOCK_SIZE + field_x, i*BLOCK_SIZE + y*BLOCK_SIZE + field_y, BLOCK_SIZE, BLOCK_SIZE);
+                    g.setColor(Color.WHITE);
+                    g.drawRect(j*BLOCK_SIZE + x*BLOCK_SIZE + field_x, i*BLOCK_SIZE + y*BLOCK_SIZE + field_y, BLOCK_SIZE, BLOCK_SIZE);
+                }
+            }
+        }
+    }
+
+    public void SetColor(Graphics g, int color) {
+        switch(color) {
+            case CYAN:
+                g.setColor(Color.CYAN);
+                break;
+            case ORANGE:
+                g.setColor(Color.ORANGE);
+                break;
+            case RED:
+                g.setColor(Color.RED);
+                break;
+            case GREEN:
+                g.setColor(Color.GREEN);
+                break;
+            case PINK:
+                g.setColor(Color.PINK);
+                break;
+            case BLUE:
+                g.setColor(Color.BLUE);
+                break;
+            case YELLOW:
+                g.setColor(Color.YELLOW);
+                break;
+        }
+    }
+
+    public void paintComponent (Graphics g) {
+        super.paintComponent(g);
+        setBackground(Color.BLACK);
+        if(!gameOver) {
+            for (int i = 0; i &lt; 20; i++) {
+                for (int j = 0; j &lt; 10 ; j++) {
+                    g.setColor(Color.WHITE);
+                    g.drawRect(j*BLOCK_SIZE + field_x, i*BLOCK_SIZE + field_y, BLOCK_SIZE, BLOCK_SIZE);
+                }
+            }
+            draw(g);
+        }
+        else {
+            Font font1 = new Font("ＭＳ Ｐゴシック",Font.PLAIN, 50);
+		    g.setFont(font1);
+            g.setColor(Color.RED);
+            g.drawString("GameOver", field_x+50, field_y+280);
+        }
+    }
+}
+          </code></pre>
+            <div class="description-zone">
+              <div class="description-detail-zone">
+                <p>
+                  実際にゲームを行う画面を表示し、ゲームに必要な処理を行うクラスである。<br />
+                </p>
+              </div>
+              <div class="field-zone">
+                <div class="field-title-zone">
+                  <h4 class="description-sub-title">フィールド</h4>
+                </div>
+                <div class="field-main-zone">
+                  <p>
+                    fieldsは、20×10の二次元配列であり、テトリスのフィールドを表す。<br />
+                    currentMinoは、現在のブロックを表す。<br />
+                    nextMinosは、次に出てくるブロックを格納している線形リストである。
+                    <br />
+                    minosは、このゲームで用いるブロックを格納している線形リストである。
+                    <br />
+                    fallFrameは、フレーム数を表す。 <br />
+                    fallFrameCheckは、移動速度を表すフィールドであり、値が小さいほど早くなる。
+                    <br />
+                    x, y, rは、座標を表すフィールドである。 <br />
+                    xx, yy, rrは、元の座標の仮座標用。 <br />
+                    fxは、仮x座標とブロックが存在するx座標を足した値を格納したもの。
+                    <br />
+                    fyは、仮y座標とブロックが存在するy座標を足した値を格納したもの。
+                    <br />
+                    gameOverは、ゲームオーバーしたかどうかを判断するフィールドである。
+                    <br />
+                    inputKeyは、キーが入力されたのかを判別するフィールドである。
+                    <br />
+                    BLOCK_SIZEは、ブロックの大きさを表すフィールドである。<br />
+                    width, heightは、画面の幅と高さを表すフィールドである。
+                    <br />
+                    field_x,
+                    field_yは、ゲームの内容が画面の真ん中になるように調整した値が格納されているフィールドである。
+                    <br />
+                  </p>
+                </div>
+              </div>
+              <div class="method-zone">
+                <div class="method-title-zone">
+                  <h4 class="description-sub-title">メソッド</h4>
+                </div>
+                <div class="method-main-zone">
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>moveBlock</h5>
+                    </div>
+                    <p>
+                      ブロックを移動するためのメソッドである。
+                      <br />
+                      1. 右を押したらxx++する。 <br />
+                      2. 左を押したらyy++する。 <br />
+                      3. 下を押したら落下速度を早くする。 <br />
+                      4. スペースキーを押したら回転する。 <br />
+                    </p>
+                  </div>
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>speedDown</h5>
+                    </div>
+                    <p>↓キーが離れたら元の速度に戻すメソッドである。<br /></p>
+                  </div>
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>process</h5>
+                    </div>
+                    <p>
+                      ブロックの落下と移動、回転可能かの判定と
+                      ブロックを横1列削除を行うメソッドである。<br />
+                      1. キー入力でなければ、元座標を仮座標に格納する。 <br />
+                      2. 自由落下の処理を行う。 <br />
+                      3.
+                      移動、回転後にブロックが存在しないかどうかを判断し、存在しなければ、元座標を更新する。
+                      <br />
+                      4.
+                      フィールドをチェックし、横一列にブロックがあればその列のブロックを削除する。
+                      <br />
+                      5. 上にあるブロックをすべて一段下へずらす。 <br />
+                    </p>
+                  </div>
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>nextInit</h5>
+                    </div>
+                    <p>
+                      次に使うためのブロックに関する処理を行うメソッドである。<br />
+                      1. 落とすブロックを更新する。 <br />
+                      2.
+                      出現予定のブロックが少なくなってきたら、シャッフルして次の一巡分を格納する。
+                      <br />
+                      3. 1列目か2列目にブロックがあったらゲームオーバーとなる。
+                      <br />
+                    </p>
+                  </div>
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>draw</h5>
+                    </div>
+                    <p>
+                      ゲームのフィールドとそこにあるブロックと
+                      落下中のブロックと次のブロックを描画するメソッドである。<br />
+                      1. フィールドの描画を行う。 <br />
+                      2. NEXT画面の描画を行う。 <br />
+                      3. 現在落下中のブロックの描画を行う。 <br />
+                    </p>
+                  </div>
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>SetColor</h5>
+                    </div>
+                    <p>
+                      配列に格納されている値によって、ブロックの色を決めるためのメソッドである。<br />
+                      以下が対応する色である。<br />
+                      シアン:1, オレンジ:2, 赤:3, 緑:4, ピンク:5, 青:6, 黄色:7
+                      <br />
+                    </p>
+                  </div>
+                  <div class="method-zone">
+                    <div class="method-name-zone">
+                      <h5>paintComponent</h5>
+                    </div>
+                    <p>
+                      描画処理を行うためのメソッドである。<br />
+                      1. ゲームオーバーでない間、ゲーム画面を描画する。<br />
+                      2.
+                      ゲームオーバーになったら、ゲームオーバー画面を描画する。
+                      <br />
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="movie-zone">
+        <div class="title-zone">
+          <h2>実際にプレイした動画</h2>
+        </div>
+        <div class="movie-main-zone">
+          <video id="video" src="./テトリス.mp4" muted controls oncontextmenu="return false;"></video>
+        </div>
+      </div>
+      <div class="improvement-zone">
+        <div class="title-zone">
+          <h2>改善点</h2>
+        </div>
+        <p>
+          1. スコア表示させる。 <br />
+          2. BGMをつける。 <br />
+          3. 難易度を設定できる機能。 <br />
+          この3つが挙げられる。 <br />
+        </p>
+      </div>
+    </main>
+    <footer>
+      <div class="reference-document-zone">
+        <h4>参考文献</h4>
+        <div class="reference-document-list">
+          <p>
+            のんぽぐ．"【Java】テトリス制作"．のんぽぐ．<a
+              href="https://nompor.com/2018/10/16/post-4655/"
+              >https://nompor.com/2018/10/16/post-4655/</a
+            >.<br />
+          </p>
+        </div>
+      </div>
+    </footer>
+    <script src="highlight/highlight.min.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+  </body>
+</html>

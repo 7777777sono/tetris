@@ -1,0 +1,300 @@
+.header-title-zone {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 10px;
+}
+
+@media screen and (max-width: 480px) {
+  .header-title-zone {
+    font-size: 13px;
+  }
+}
+
+@media screen and (min-width: 1501px) {
+  .header-title-zone {
+    font-size: 27px;
+  }
+}
+
+@media screen and (min-width: 1501px) {
+  .text-zone p {
+    font-size: 20px;
+  }
+}
+
+.title-zone h2 {
+  margin-top: 10px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #21cfcc;
+}
+
+@media screen and (max-width: 800px) {
+  .title-zone {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media screen and (min-width: 801px) {
+  .title-zone {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media screen and (min-width: 1501px) {
+  .title-zone {
+    font-size: 25px;
+  }
+}
+
+.text-zone,
+.file-name-zone,
+.description-detail-zone,
+.field-title-zone,
+.field-main-zone,
+.method-title-zone,
+.method-name-zone {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+@media screen and (max-width: 800px) {
+  .text-zone,
+  .file-name-zone,
+  .description-detail-zone,
+  .field-title-zone,
+  .field-main-zone,
+  .method-title-zone,
+  .method-name-zone {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media screen and (min-width: 801px) {
+  .text-zone,
+  .file-name-zone,
+  .description-detail-zone,
+  .field-title-zone,
+  .field-main-zone,
+  .method-title-zone,
+  .method-name-zone {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.file-name-zone {
+  font-size: 23px;
+  margin-bottom: 10px;
+}
+
+@media screen and (min-width: 1501px) {
+  .file-name-zone {
+    font-size: 25px;
+  }
+}
+
+@media screen and (min-width: 1501px) {
+  .description-detail-zone {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .description-sub-title {
+    font-size: 20px;
+  }
+}
+
+@media screen and (min-width: 1501px) {
+  .description-sub-title {
+    font-size: 25px;
+  }
+}
+
+.description-sub-title,
+.method-zone {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 1500px) {
+  .method-name-zone h5 {
+    font-size: 17px;
+  }
+}
+
+@media screen and (min-width: 1501px) {
+  .method-name-zone h5 {
+    font-size: 22px;
+  }
+}
+
+pre {
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 800px) {
+  pre {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media screen and (min-width: 801px) {
+  pre {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+code {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-line-pack: center;
+      align-content: center;
+}
+
+@media screen and (min-width: 1501px) {
+  code {
+    font-size: 20px;
+  }
+}
+
+.overview-main-zone p {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+@media screen and (min-width: 1501px) {
+  .overview-main-zone p {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .overview-main-zone {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media screen and (min-width: 801px) {
+  .overview-main-zone {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media screen and (min-width: 1501px) {
+  .field-main-zone {
+    font-size: 20px;
+  }
+}
+
+.method-main-zone p,
+.improvement-zone p {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+@media screen and (max-width: 800px) {
+  .method-main-zone p,
+  .improvement-zone p {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media screen and (min-width: 801px) {
+  .method-main-zone p,
+  .improvement-zone p {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media screen and (min-width: 1501px) {
+  .method-main-zone p,
+  .improvement-zone p {
+    font-size: 20px;
+  }
+}
+
+.reference-document-zone {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.reference-document-zone .reference-document-list a {
+  word-break: break-all;
+}
+
+@media screen and (max-width: 800px) {
+  .reference-document-zone {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media screen and (min-width: 801px) {
+  .reference-document-zone {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media screen and (min-width: 1501px) {
+  .reference-document-zone {
+    font-size: 20px;
+  }
+}
+
+.movie-main-zone {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.movie-main-zone video {
+  width: 80%;
+}
+
+video::-webkit-media-controls-volume-slider {
+  display: none;
+}
+
+video::-webkit-media-controls-mute-button {
+  display: none;
+}
+/*# sourceMappingURL=style.css.map */
